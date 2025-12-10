@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>3-Tier Frontend - Tuyển Sinh</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container { 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 30px;
+            max-width: 750px;
+            width: 100%;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        h2 {
+            background: linear-gradient(135deg, #1e3c72, #7e22ce);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            color: #64748b;
+            margin-bottom: 35px;
+            font-size: 16px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        button { 
+            padding: 18px 45px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(135deg, #2563eb 0%, #7e22ce 100%);
+            color: white;
+            border: none;
+            border-radius: 100px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35),
+                        0 0 0 0 rgba(37, 99, 235, 0.5);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            display: block;
+            margin: 0 auto;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(37, 99, 235, 0.5),
+                        0 0 0 8px rgba(37, 99, 235, 0.1);
+        }
+
+        button:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        #result { 
+            margin-top: 35px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            border-radius: 20px;
+            text-align: left;
+            min-height: 120px;
+            box-shadow: inset 0 2px 15px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(37, 99, 235, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #result::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        #result:hover::before {
+            left: 100%;
+        }
+
+        #result h3 {
+            background: linear-gradient(135deg, #2563eb, #7e22ce);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        #result ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #result li {
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            background: white;
+            border-radius: 12px;
+            border-left: 5px solid #2563eb;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+            color: #334155;
+        }
+
+        #result li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: linear-gradient(135deg, #2563eb, #7e22ce);
+            transition: width 0.3s ease;
+        }
+
+        #result li:hover {
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(37, 99, 235, 0.2);
+        }
+
+        #result li:hover::before {
+            width: 100%;
+        }
+
+        #result p {
+            margin: 12px 0;
+            color: #475569;
+            text-align: left;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 35px 25px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            button {
+                padding: 15px 35px;
+                font-size: 15px;
+            }
+
+            #result li {
+                padding: 14px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Ứng Dụng Tuyển Sinh Web 3-Tier</h2>
+    <p>ntphuoc-23050095</p>
+    <button onclick="getStudents()">Lấy Danh Sách Sinh Viên (Gọi API)</button>
+    <div id="result">Kết quả từ Backend/DB sẽ hiển thị ở đây.</div>
+</div>
+
+<script>
+async function getStudents() {
+    document.getElementById('result').innerHTML = "Đang gọi API Backend...";
+    try {
+        // API này sẽ gọi đến Nginx Proxy, Nginx sẽ chuyển tiếp đến Private IP của Backend
+        const response = await fetch('/api/students'); 
+        const data = await response.json();
+
+        let output = '<h3>Dữ Liệu Nhận Được:</h3>';
+        if (data.length > 0) {
+            output += '<ul>';
+            data.forEach(student => {
+                output += `<li>ID: ${student.id}, Tên: ${student.name}</li>`;
+            });
+            output += '</ul>';
+        } else {
+            output += '<p>Không tìm thấy dữ liệu sinh viên. (Kiểm tra kết nối BE -> DB)</p>';
+        }
+
+        document.getElementById('result').innerHTML = output;
+    } catch (error) {
+        document.getElementById('result').innerHTML = `<h3>Lỗi Kết Nối:</h3> <p>Kiểm tra cấu hình Nginx Proxy hoặc Backend API: ${error.message}</p>`;
+        console.error('Error fetching data:', error);
+    }
+}
+</script>
+
+</body>
+
+</html>
